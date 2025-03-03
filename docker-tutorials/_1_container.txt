@@ -1,0 +1,102 @@
+-- docker eskiye yönelikte çalışır
+docker run hello-world
+
+
+-- yenisi
+docker container run hello-world
+
+-- search
+docker search --help
+docker search nginx
+docker pull nginx
+
+-- container
+container: tek bir application için kullanılır
+docker search nginx
+docker pull nginx
+docker container run --publish 80:80 nginx 
+docker container run --publish 81:80 --detach nginx
+docker container run --publish 82:80 --detach --name nginx_my1 nginx
+docker container run --publish 85:80 --detach --name nginx_my5 --rm nginx
+docker container run --publish 86:80 --detach --name nginx_my6 --rm nginx:latest
+docker container run --publish 86:80 --detach --name nginx_my6 --rm nginx:1.14 
+docker container run -p 87:80 -d --name nginx_my7 --rm nginx:1.14
+
+-- yukarıda mesela gidip 1.14 sürümünü indirecek normalde latestti
+
+
+
+-- LIST (CONTAINER)
+docker ps //tüm containerler
+docker container ps
+docker container ls //çalışan containerler  
+docker container ls -a //çalışan çalışmayan tüm containerler
+
+
+--STOP 
+docker container stop <CONTAINER_ID>
+docker container stop <CONTAINER_NAME>
+docker container stop a3653ffdb9f5 b019f10da882
+
+--START 
+docker container run -p 90:80 -d --name nginx_my90 nginx 
+//burda rm kullanmıyoruz çünkü rm yapısında durdurduğumuz an container otomatik olarak silinecek
+docker container ps //çalışan containerler
+docker container stop 06d05dd783d7
+docker container ps -a //çalışmayan containerleri de gösteriyor
+docker container run -p 1111:80 --name apache_my1 httpd // nginx yerine apache kullanırsak ne olur
+
+--DELETE
+docker container stop <CONTAINER_ID>
+docker container rm <CONTAINER_ID>
+docker container rm <CONTAINER_NAME>
+docker container rm b019f10da882 76be1f7cba7a a3653ffdb9f5 a2d18fb270de
+// names kısmını da yazabilirdik
+
+--DELETE FORCE
+ERROR: Error response from daemon: cannot remove container "/nginx_my4": container is running: stop the container before removing or force remove
+//yani öncelikle containeri durdurup sonrasında silme işlemi yapmamız gerekiyor
+docker container stop <CONTAINER_ID>
+docker container rm -f <CONTAINER_ID>
+docker container rm -f <CONTAINER_NAME>
+
+
+
+--PRUNE DELETE
+docker container prune -y // çalışmayanları silecek
+
+
+-- --detach arka planda çalışsın anlamına geliyor
+-- çalıştırılması durdurulduğu an silinicek 
+docker container run --publish 84:80 --detach --name nginx_my4 --rm nginx
+
+
+
+
+docker container --help
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  exec        Execute a command in a running container
+  export      Export a container's filesystem as a tar archive
+  inspect     Display detailed information on one or more containers
+  kill        Kill one or more running containers
+  logs        Fetch the logs of a container
+  ls          List containers
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  prune       Remove all stopped containers
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  run         Create and run a new container from an image
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  wait        Block until one or more containers stop, then print their exit codes
